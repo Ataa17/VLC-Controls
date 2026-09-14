@@ -9,6 +9,8 @@ import cv2
 
 from src.gestures.recognizer import (
 	PLAY_PAUSE,
+	SEEK_BACKWARD,
+	SEEK_FORWARD,
 	VOLUME_DOWN,
 	VOLUME_UP,
 	GestureRecognizer,
@@ -50,6 +52,8 @@ def main() -> None:
 		PLAY_PAUSE: controller.play_pause,
 		VOLUME_UP: controller.volume_up,
 		VOLUME_DOWN: controller.volume_down,
+		SEEK_FORWARD: controller.seek_forward,
+		SEEK_BACKWARD: controller.seek_backward,
 	}
 
 	last_command = None
@@ -63,14 +67,15 @@ def main() -> None:
 					print("Camera frame could not be read.")
 					break
 
-				display_frame = cv2.flip(frame, 1)
-				detection = detector.detect(display_frame)
+				detection = detector.detect(frame)
 				command = None
 				if detection is not None:
 					command = recognizer.recognize(
 						detection.landmarks,
 						detection.handedness,
 					)
+
+				display_frame = cv2.flip(frame, 1)
 
 				now = time.monotonic()
 				cooldown_elapsed = now - last_command_time

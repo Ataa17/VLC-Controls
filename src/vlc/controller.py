@@ -41,6 +41,14 @@ class VLCController:
         """Decrease VLC volume by the configured step."""
         self._send_command("volume", f"-{self.volume_step}")
 
+    def seek_forward(self, seconds: int = 10) -> None:
+        """Seek forward by the given number of seconds."""
+        self._send_command("seek", f"+{seconds}")
+
+    def seek_backward(self, seconds: int = 10) -> None:
+        """Seek backward by the given number of seconds."""
+        self._send_command("seek", f"-{seconds}")
+
     def next_track(self) -> None:
         """Switch VLC to the next track."""
         self._send_command("pl_next")
